@@ -1,9 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Header } from "./Components/header/header";
-import { Home } from './Components/pages/home';
-import { Login } from './Components/pages/login';
-import { Register } from './Components/pages/register';
-import { Dashboard } from './Components/pages/Dashboard';
+import Header from "./Components/Header/Header";
+import Home from './Components/home/home';
+import Login from './Components/login/login';
+
 function App() {
   return (
     <Router>
@@ -13,8 +12,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
       </div>
