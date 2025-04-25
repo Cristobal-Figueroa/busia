@@ -1,0 +1,52 @@
+/* Estilos para el componente AdminData */
+.admin-data-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-data-container h1 {
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.admin-data-content {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  min-height: 200px;
+}
+
+.admin-data-content p {
+  font-size: 1.1rem;
+  color: #555;
+  text-align: center;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .admin-data-container {
+    padding: 20px;
+    margin: 20px auto;
+  }
+  
+  .admin-data-container h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-data-container {
+    padding: 15px;
+    margin: 15px auto;
+  }
+  
+  .admin-data-content {
+    padding: 15px;
+  }
+}

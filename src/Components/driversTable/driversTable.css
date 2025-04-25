@@ -1,0 +1,78 @@
+/* Estilos para el componente DriversTable */
+.drivers-table-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.drivers-table-container h1 {
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.drivers-table-content {
+  overflow-x: auto;
+}
+
+.drivers-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.drivers-table th,
+.drivers-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.drivers-table th {
+  background-color: #2c3e50;
+  color: white;
+  font-weight: 500;
+}
+
+.drivers-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.drivers-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .drivers-table-container {
+    padding: 20px;
+    margin: 20px auto;
+  }
+  
+  .drivers-table-container h1 {
+    font-size: 1.8rem;
+  }
+  
+  .drivers-table th,
+  .drivers-table td {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .drivers-table-container {
+    padding: 15px;
+    margin: 15px auto;
+  }
+  
+  .drivers-table th,
+  .drivers-table td {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+}

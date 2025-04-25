@@ -25,7 +25,7 @@ function Login() {
         <form className="login-form" onSubmit={handleSubmit}>
           <h2>Iniciar Sesión</h2>
           
-          <div className="form-group">
+          <div className="login-form-group">
             <label htmlFor="fullName">Nombre Completo</label>
             <input
               type="text"
@@ -36,7 +36,7 @@ function Login() {
             />
           </div>
           
-          <div className="form-group">
+          <div className="login-form-group">
             <label htmlFor="email">Correo Electrónico</label>
             <input
               type="email"
@@ -47,7 +47,7 @@ function Login() {
             />
           </div>
           
-          <div className="form-group">
+          <div className="login-form-group">
             <label htmlFor="password">Contraseña</label>
             <input
               type="password"
