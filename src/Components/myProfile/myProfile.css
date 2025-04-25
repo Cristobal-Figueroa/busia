@@ -1,0 +1,74 @@
+/* Estilos para el componente MyProfile */
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.profile-container h1 {
+  color: #2c3e50;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 2.2rem;
+}
+
+.profile-content {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.profile-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  width: 100%;
+  max-width: 350px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card h2 {
+  color: #3498db;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.profile-card p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 30px 15px;
+  }
+  
+  .profile-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+  }
+  
+  .profile-content {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 20px;
+  }
+  
+  .profile-card h2 {
+    font-size: 1.3rem;
+  }
+}

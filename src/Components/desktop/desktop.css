@@ -1,0 +1,74 @@
+/* Estilos para el componente Desktop */
+.desktop-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.desktop-container h1 {
+  color: #2c3e50;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 2.2rem;
+}
+
+.desktop-content {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.desktop-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  width: 100%;
+  max-width: 350px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.desktop-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.desktop-card h2 {
+  color: #3498db;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.desktop-card p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .desktop-container {
+    padding: 30px 15px;
+  }
+  
+  .desktop-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+  }
+  
+  .desktop-content {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .desktop-card {
+    padding: 20px;
+  }
+  
+  .desktop-card h2 {
+    font-size: 1.3rem;
+  }
+}

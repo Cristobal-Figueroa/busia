@@ -1,0 +1,92 @@
+/* Estilos para el header */
+.header {
+  background-color: #2c3e50;
+  color: white;
+  width: 100%;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 70px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.logo a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.logo a:hover {
+  color: #3498db;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 0 15px;
+    height: 60px;
+  }
+  
+  .logo {
+    font-size: 1.3rem;
+  }
+  
+  .nav-button {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+  }
+  
+  .logo {
+    margin-bottom: 10px;
+  }
+  
+  .nav-menu {
+    width: 100%;
+    justify-content: space-around;
+  }
+  
+  .nav-button {
+    padding: 8px 10px;
+  }
+}
