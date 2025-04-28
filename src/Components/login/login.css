@@ -31,8 +31,30 @@
 .login-form h2 {
   color: #2c3e50;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-size: 1.8rem;
+}
+
+/* Estilos para el enlace de registro */
+.login-register-link {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.login-register-link span {
+  text-decoration: none;
+  color: #555;
+}
+
+.login-register-link .register-link {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-register-link .register-link:hover {
+  text-decoration: underline;
 }
 
 .login-form-group {
@@ -59,6 +81,38 @@
   border-color: #3498db;
   outline: none;
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Estilos para las opciones de recordarme y olvidar contraseña */
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+}
+
+.remember-me input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.remember-me label {
+  color: #555;
+  cursor: pointer;
+}
+
+.forgot-password a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
 }
 
 .login-button {
@@ -104,5 +158,14 @@
   
   .login-button {
     padding: 10px;
+  }
+  
+  .login-options {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .forgot-password {
+    margin-top: 10px;
   }
 }
