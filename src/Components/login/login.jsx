@@ -19,7 +19,7 @@ function Login() {
     <div className="login-container">
       <div className="login-form-wrapper">
         <div className="login-logo">
-          <h1>BusIA</h1>
+          <img src="/busia-logo.png" alt="BusIA Logo" className="login-logo-image" />
         </div>
         
         <form className="login-form" onSubmit={handleSubmit}>
