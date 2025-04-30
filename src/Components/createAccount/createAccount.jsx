@@ -2,46 +2,78 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './createAccount.css';
 
-function createAccount() {
+function CreateAccount() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [terms, setTerms] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (name.trim().length < 3) {
+      newErrors.name = 'El nombre debe tener al menos 3 caracteres';
+    }
+    
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = 'Ingrese un correo electrónico válido';
+    }
+    
+    if (password.length < 6) {
+      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+    }
+    
+    if (!acceptTerms) {
+      newErrors.terms = 'Debe aceptar los términos y condiciones';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/');
+    
+    if (validateForm()) {
+      // Aquí iría la lógica para crear la cuenta
+      console.log('Cuenta creada con éxito', { name, email, password, rememberMe, acceptTerms });
+      navigate('/');
+    }
   };
 
   return (
-    <div className="register-container">
-      <div className="register-form-wrapper">
-        <div className="login-logo">
-          <img src="/busia-logo.png" alt="BusIA Logo" className="login-logo-image" />
+    <div className="create-account-container">
+      <div className="create-account-form-wrapper">
+        <div className="create-account-logo">
+          <img src="/busia-logo.png" alt="BusIA Logo" className="create-account-logo-image" />
         </div>
         
-        <form className="register-form" onSubmit={handleSubmit}>
+        <form className="create-account-form" onSubmit={handleSubmit}>
           <h2>Crear Cuenta</h2>
 
-          <div className="login-link">
+          <div className="create-account-login-link">
             <span>¿Ya tienes una cuenta? </span>
-            <Link to="/login" className="register-link">Inicia sesión aquí</Link>
+            <Link to="/login" className="create-account-login-link-text">Inicia sesión aquí</Link>
           </div>
 
-          <div className="register-form-group">
+          <div className="create-account-form-group">
             <label htmlFor="name">Nombre Completo</label>
             <input
               placeholder='Ingrese su nombre completo'
-              type="name"
+              type="text"
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              className={errors.name ? 'create-account-input-error' : ''}
             />
+            {errors.name && <span className="create-account-error-message">{errors.name}</span>}
           </div>
 
-          <div className="register-form-group">
+          <div className="create-account-form-group">
             <label htmlFor="email">Correo electrónico</label>
             <input
               placeholder='Ingrese su correo electrónico'
@@ -50,10 +82,12 @@ function createAccount() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className={errors.email ? 'create-account-input-error' : ''}
             />
+            {errors.email && <span className="create-account-error-message">{errors.email}</span>}
           </div>
           
-          <div className="register-form-group">
+          <div className="create-account-form-group">
             <label htmlFor="password">Contraseña</label>
             <input
               placeholder='Ingrese su contraseña'
@@ -62,25 +96,37 @@ function createAccount() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className={errors.password ? 'create-account-input-error' : ''}
             />
+            {errors.password && <span className="create-account-error-message">{errors.password}</span>}
           </div>
 
-          <div className="register-options">
-            <div className="register-me">
+          <div className="create-account-options">
+            <div className="create-account-remember-me">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <label htmlFor="rememberMe">Recordarme</label>
+            </div>
+            <div className="create-account-terms">
               <input
                 type="checkbox"
                 id="terms"
-                checked={terms}
-                onChange={(e) => setTerms(e.target.checked)}
+                checked={acceptTerms}
+                onChange={(e) => setAcceptTerms(e.target.checked)}
+                className={errors.terms ? 'create-account-checkbox-error' : ''}
               />
-              <label htmlFor="terms">Recordarme</label>
-            </div>
-            <div className="terms-and-conditions">
-              <Link to="/terms-and-conditions">Acepto los términos y condiciones</Link>
+              <label htmlFor="terms">
+                Acepto los <Link to="/terms-and-conditions" className="create-account-terms-link">términos y condiciones</Link>
+              </label>
+              {errors.terms && <span className="create-account-error-message">{errors.terms}</span>}
             </div>
           </div>
 
-          <button type="submit" className="login-button">
+          <button type="submit" className="create-account-button">
             Crear cuenta
           </button>
         </form>
@@ -89,4 +135,4 @@ function createAccount() {
   );
 }
 
-export default createAccount;
+export default CreateAccount;
