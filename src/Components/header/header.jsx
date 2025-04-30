@@ -91,10 +91,11 @@ function Header() {
             </div>
             {showAccountMenu && (
               <div className="header-dropdown-menu">
-                <Link to="/login" className="header-dropdown-item">Login</Link>
+                <Link to="/login" className="header-dropdown-item">Ingresar</Link>
+                <Link to="/createAccount" className="header-dropdown-item">Registrarme</Link>
                 <Link to="/myProfile" className="header-dropdown-item">Mi Perfil</Link>
                 <Link to="/adminData" className="header-dropdown-item">Datos del Administrador</Link>
-                <Link to="/logout" className="header-dropdown-item">Logout</Link>
+                <Link to="/logout" className="header-dropdown-item">Salir</Link>
               </div>
             )}
           </div>

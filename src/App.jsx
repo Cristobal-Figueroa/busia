@@ -8,6 +8,7 @@ import MyProfile from './Components/myProfile/myProfile';
 import FleetTable from './Components/fleetTable/fleetTable';
 import DriversTable from './Components/driversTable/driversTable';
 import AdminData from './Components/adminData/adminData';
+import CreateAccount from './Components/createAccount/createAccount';
 
 // Componente contenedor que decide si mostrar el Header o no
 function AppContent() {
@@ -27,6 +28,7 @@ function AppContent() {
           <Route path="/driversTable" element={<DriversTable />} />
           <Route path="/adminData" element={<AdminData />} />
           <Route path="/logout" element={<Login />} />
+          <Route path="/createAccount" element={<CreateAccount />} />
         </Routes>
       </main>
     </div>
