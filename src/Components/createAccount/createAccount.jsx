@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import userService from '../../services/userService';
 import './createAccount.css';
 
 function CreateAccount() {
@@ -52,6 +53,17 @@ function CreateAccount() {
         await updateProfile(userCredential.user, {
           displayName: name
         });
+        
+        // Guardar datos adicionales del usuario en Realtime Database
+        const userData = {
+          name,
+          email,
+          role: 'user', // Rol predeterminado
+          active: true,
+          lastLogin: new Date().toISOString()
+        };
+        
+        await userService.saveUser(userCredential.user.uid, userData);
         
         // Si el checkbox de recordarme está marcado
         if (rememberMe) {

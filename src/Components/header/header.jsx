@@ -6,7 +6,7 @@ import './header.css';
 function Header() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showDesktopMenu, setShowDesktopMenu] = useState(false);
-  const { currentUser, signOut } = useAuth();
+  const { currentUser, userData, signOut } = useAuth();
   const navigate = useNavigate();
   
   const accountDropdownRef = useRef(null);
@@ -100,7 +100,13 @@ function Header() {
             onMouseLeave={handleAccountMouseLeave}
           >
             <div className="header-nav-button header-dropdown-trigger">
-              Mi Cuenta
+              {currentUser ? (
+                <span className="header-user-info">
+                  {userData?.name || currentUser.displayName || currentUser.email}
+                </span>
+              ) : (
+                'Mi Cuenta'
+              )}
             </div>
             {showAccountMenu && (
               <div className="header-dropdown-menu">

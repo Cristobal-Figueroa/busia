@@ -68,6 +68,16 @@
   cursor: pointer;
 }
 
+.header-user-info {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .header-dropdown-menu {
   position: absolute;
   top: 100%;

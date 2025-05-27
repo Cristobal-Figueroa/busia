@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import userService from '../../services/userService';
 import './login.css';
 
 function Login() {
@@ -11,6 +12,15 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
+  // Cargar email recordado si existe
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    if (rememberedEmail) {
+      setEmail(rememberedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,12 +29,36 @@ function Login() {
     
     try {
       // Autenticar con Firebase
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Actualizar datos de último login en Realtime Database
+      try {
+        // Primero verificamos si el usuario ya existe en la base de datos
+        const userData = await userService.getUserById(user.uid);
+        
+        if (userData) {
+          // Si existe, actualizamos su último login
+          await userService.updateUser(user.uid, {
+            lastLogin: new Date().toISOString()
+          });
+        } else {
+          // Si no existe (caso raro pero posible), creamos el registro
+          await userService.saveUser(user.uid, {
+            name: user.displayName || '',
+            email: user.email,
+            role: 'user',
+            active: true,
+            lastLogin: new Date().toISOString()
+          });
+        }
+      } catch (dbError) {
+        console.error('Error al actualizar datos de usuario en la base de datos:', dbError);
+        // No interrumpimos el flujo de login por un error en la base de datos
+      }
       
       // Si el checkbox de recordarme está marcado, configurar persistencia
       if (rememberMe) {
-        // La persistencia se configura en el nivel de la aplicación, no por usuario
-        // Pero podríamos guardar el email en localStorage
         localStorage.setItem('rememberedEmail', email);
       } else {
         localStorage.removeItem('rememberedEmail');
