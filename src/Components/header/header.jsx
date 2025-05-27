@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import './header.css';
 
 function Header() {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showDesktopMenu, setShowDesktopMenu] = useState(false);
+  const { currentUser, signOut } = useAuth();
+  const navigate = useNavigate();
   
   const accountDropdownRef = useRef(null);
   const desktopDropdownRef = useRef(null);
@@ -53,6 +56,16 @@ function Header() {
       }
     };
   }, []);
+  
+  // Manejar el cierre de sesión
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/login');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
 
   return (
     <header className="header">
@@ -91,11 +104,18 @@ function Header() {
             </div>
             {showAccountMenu && (
               <div className="header-dropdown-menu">
-                <Link to="/login" className="header-dropdown-item">Ingresar</Link>
-                <Link to="/createAccount" className="header-dropdown-item">Registrarme</Link>
-                <Link to="/myProfile" className="header-dropdown-item">Mi Perfil</Link>
-                <Link to="/adminData" className="header-dropdown-item">Datos del Administrador</Link>
-                <Link to="/logout" className="header-dropdown-item">Salir</Link>
+                {currentUser ? (
+                  <>
+                    <Link to="/myProfile" className="header-dropdown-item">Mi Perfil</Link>
+                    <Link to="/adminData" className="header-dropdown-item">Datos del Administrador</Link>
+                    <button onClick={handleSignOut} className="header-dropdown-item header-signout-button">Cerrar Sesión</button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="header-dropdown-item">Ingresar</Link>
+                    <Link to="/createAccount" className="header-dropdown-item">Registrarme</Link>
+                  </>
+                )}
               </div>
             )}
           </div>

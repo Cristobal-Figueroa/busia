@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth } from '../../firebase/config';
 import './createAccount.css';
 
 function CreateAccount() {
@@ -9,6 +11,8 @@ function CreateAccount() {
   const [rememberMe, setRememberMe] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [generalError, setGeneralError] = useState('');
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -34,13 +38,50 @@ function CreateAccount() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setGeneralError('');
     
     if (validateForm()) {
-      // Aquí iría la lógica para crear la cuenta
-      console.log('Cuenta creada con éxito', { name, email, password, rememberMe, acceptTerms });
-      navigate('/');
+      setLoading(true);
+      try {
+        // Crear usuario con email y contraseña en Firebase
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        
+        // Actualizar el perfil del usuario con su nombre
+        await updateProfile(userCredential.user, {
+          displayName: name
+        });
+        
+        // Si el checkbox de recordarme está marcado
+        if (rememberMe) {
+          localStorage.setItem('rememberedEmail', email);
+        }
+        
+        console.log('Cuenta creada con éxito', { name, email });
+        navigate('/');
+      } catch (err) {
+        // Manejar errores de registro
+        let errorMessage = 'Error al crear la cuenta';
+        if (err.code === 'auth/email-already-in-use') {
+          setErrors({
+            ...errors,
+            email: 'Este correo electrónico ya está en uso'
+          });
+        } else if (err.code === 'auth/weak-password') {
+          setErrors({
+            ...errors,
+            password: 'La contraseña es demasiado débil'
+          });
+        } else if (err.code === 'auth/network-request-failed') {
+          setGeneralError('Error de conexión. Verifique su conexión a internet');
+        } else {
+          setGeneralError(errorMessage);
+        }
+        console.error('Error al crear cuenta:', err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -53,6 +94,8 @@ function CreateAccount() {
         
         <form className="create-account-form" onSubmit={handleSubmit}>
           <h2>Crear Cuenta</h2>
+          
+          {generalError && <div className="create-account-general-error">{generalError}</div>}
 
           <div className="create-account-login-link">
             <span>¿Ya tienes una cuenta? </span>
@@ -126,8 +169,8 @@ function CreateAccount() {
             </div>
           </div>
 
-          <button type="submit" className="create-account-button">
-            Crear cuenta
+          <button type="submit" className="create-account-button" disabled={loading}>
+            {loading ? 'Creando cuenta...' : 'Crear cuenta'}
           </button>
         </form>
       </div>

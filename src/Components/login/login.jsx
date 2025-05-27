@@ -1,18 +1,51 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase/config';
 import './login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Por ahora, simplemente redirigimos al home después de "login"
-    // En el futuro aquí iría la lógica de autenticación
-    navigate('/');
+    setError('');
+    setLoading(true);
+    
+    try {
+      // Autenticar con Firebase
+      await signInWithEmailAndPassword(auth, email, password);
+      
+      // Si el checkbox de recordarme está marcado, configurar persistencia
+      if (rememberMe) {
+        // La persistencia se configura en el nivel de la aplicación, no por usuario
+        // Pero podríamos guardar el email en localStorage
+        localStorage.setItem('rememberedEmail', email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
+      
+      // Redireccionar al home después de login exitoso
+      navigate('/');
+    } catch (err) {
+      // Manejar errores de autenticación
+      let errorMessage = 'Error al iniciar sesión';
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+        errorMessage = 'Correo electrónico o contraseña incorrectos';
+      } else if (err.code === 'auth/too-many-requests') {
+        errorMessage = 'Demasiados intentos fallidos. Intente más tarde';
+      } else if (err.code === 'auth/network-request-failed') {
+        errorMessage = 'Error de conexión. Verifique su conexión a internet';
+      }
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -24,6 +57,8 @@ function Login() {
         
         <form className="login-form" onSubmit={handleSubmit}>
           <h2>Iniciar Sesión</h2>
+          
+          {error && <div className="login-error-message">{error}</div>}
 
           <div className="login-register-link">
             <span>¿No tienes una cuenta? </span>
@@ -69,8 +104,8 @@ function Login() {
             </div>
           </div>
 
-          <button type="submit" className="login-button">
-            Iniciar sesión
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </button>
         </form>
       </div>
