@@ -14,6 +14,10 @@ function Home() {
           <h2>MI CUENTA</h2>
           <p>Administra tu perfil y configuración</p>
         </Link>
+        <Link to="/fleetVehicles" className="home-card">
+          <h2>FLOTA DE VEHÍCULOS</h2>
+          <p>Gestiona la información de los vehículos</p>
+        </Link>
       </div>
     </div>
   );

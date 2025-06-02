@@ -5,10 +5,9 @@ import Home from './Components/home/home';
 import Login from './Components/login/login';
 import Desktop from './Components/desktop/desktop';
 import MyProfile from './Components/myProfile/myProfile';
-import FleetTable from './Components/fleetTable/fleetTable';
-import DriversTable from './Components/driversTable/driversTable';
 import AdminData from './Components/adminData/adminData';
 import CreateAccount from './Components/createAccount/createAccount';
+import FleetVehicles from './Components/fleetVehicles/fleetVehicles';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './contexts/AuthContext';
 
@@ -43,19 +42,14 @@ function AppContent() {
               <MyProfile />
             </ProtectedRoute>
           } />
-          <Route path="/fleetTable" element={
-            <ProtectedRoute>
-              <FleetTable />
-            </ProtectedRoute>
-          } />
-          <Route path="/driversTable" element={
-            <ProtectedRoute>
-              <DriversTable />
-            </ProtectedRoute>
-          } />
           <Route path="/adminData" element={
             <ProtectedRoute>
               <AdminData />
+            </ProtectedRoute>
+          } />
+          <Route path="/fleetVehicles" element={
+            <ProtectedRoute>
+              <FleetVehicles />
             </ProtectedRoute>
           } />
           

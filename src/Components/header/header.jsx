@@ -86,8 +86,7 @@ function Header() {
             </div>
             {showDesktopMenu && (
               <div className="header-dropdown-menu">
-                <Link to="/fleetTable" className="header-dropdown-item">Flota</Link>
-                <Link to="/driversTable" className="header-dropdown-item">Conductores</Link>
+                <Link to="/fleetVehicles" className="header-dropdown-item">Flota de Vehículos</Link>
               </div>
             )}
           </div>
