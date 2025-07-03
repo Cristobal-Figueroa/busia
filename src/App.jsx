@@ -10,6 +10,7 @@ import CreateAccount from './Components/createAccount/createAccount';
 import FleetVehicles from './Components/fleetVehicles/fleetVehicles';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './contexts/AuthContext';
+import InstallButton from './components/InstallButton';
 
 // Componente contenedor que decide si mostrar el Header o no
 function AppContent() {
@@ -20,6 +21,7 @@ function AppContent() {
   return (
     <div className="app">
       {!isLoginPage && <Header />}
+      <InstallButton />
       <main>
         <Routes>
           {/* Rutas públicas */}
