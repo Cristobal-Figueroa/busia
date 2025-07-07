@@ -36,56 +36,99 @@ function Mapa() {
     setError(null);
     
     try {
-      const response = await fetch('https://govia.cl/busIA/gps_data.txt');
+      // Usamos un proxy local para evitar problemas de CORS
+      // En desarrollo usamos un proxy de desarrollo, en producción usaríamos el archivo PHP
+      const isProduction = window.location.hostname !== 'localhost';
+      
+      let response;
+      if (isProduction) {
+        // En producción, usar el proxy PHP
+        response = await fetch('/CORS.php');
+      } else {
+        // En desarrollo, usar un proxy local o una solución alternativa
+        // Opción 1: Usar un proxy local si está disponible
+        try {
+          response = await fetch('/api/proxy?url=https://govia.cl/busIA/gps_data.txt');
+        } catch (proxyErr) {
+          console.error('Error con el proxy de desarrollo:', proxyErr);
+          // Datos de ejemplo para desarrollo
+          const exampleData = `2025-04-29 21:51:40 - Latitud: -36.606415, Longitud: -72.096725
+2025-04-29 21:52:40 - Latitud: -36.606171, Longitud: -72.096756
+2025-04-29 21:53:39 - Patente: SPXW10, Latitud: -36.606319, Longitud: -72.096725`;
+          
+          return processGpsData(exampleData);
+        }
+        
+        // Si la respuesta no es OK, usar datos de ejemplo
+        if (!response.ok) {
+          console.warn('Proxy de desarrollo no disponible, usando datos de ejemplo');
+          // Datos de ejemplo para desarrollo
+          const exampleData = `2025-04-29 21:51:40 - Latitud: -36.606415, Longitud: -72.096725
+2025-04-29 21:52:40 - Latitud: -36.606171, Longitud: -72.096756
+2025-04-29 21:53:39 - Patente: SPXW10, Latitud: -36.606319, Longitud: -72.096725`;
+          
+          return processGpsData(exampleData);
+        }
+      }
       
       if (!response.ok) {
         throw new Error('No se pudieron obtener los datos del GPS');
       }
       
       const text = await response.text();
-      const lines = text.trim().split('\n');
-      
-      // Procesar los datos
-      const processedData = lines.map(line => {
-        const parts = line.split(' - ');
-        const dateTime = parts[0];
-        
-        // Verificar si hay información de patente
-        let patente = null;
-        let latLngPart = parts[1];
-        
-        if (parts[1].startsWith('Patente:')) {
-          const patenteParts = parts[1].split(', ');
-          patente = patenteParts[0].replace('Patente: ', '');
-          latLngPart = patenteParts.slice(1).join(', ');
-        }
-        
-        // Extraer latitud y longitud
-        const latMatch = latLngPart.match(/Latitud: ([-\d.]+)/);
-        const lngMatch = latLngPart.match(/Longitud: ([-\d.]+)/);
-        
-        if (latMatch && lngMatch) {
-          return {
-            dateTime,
-            patente,
-            position: [parseFloat(latMatch[1]), parseFloat(lngMatch[1])]
-          };
-        }
-        
-        return null;
-      }).filter(item => item !== null);
-      
-      // Ordenar por fecha/hora más reciente
-      processedData.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
-      
-      setBusData(processedData);
-      setLastUpdate(new Date().toLocaleString());
+      return processGpsData(text);
     } catch (err) {
       console.error('Error al obtener datos del bus:', err);
       setError('Error al cargar los datos del GPS. Por favor, intenta de nuevo más tarde.');
     } finally {
       setLoading(false);
     }
+  };
+  
+  // Función para procesar los datos GPS
+  const processGpsData = (text) => {
+    try {
+      const lines = text.trim().split('\n');
+      
+      // Procesar los datos
+      const processedData = lines.map(line => {
+          const parts = line.split(' - ');
+          const dateTime = parts[0];
+          
+          let patente = null;
+          let latLngPart = parts[1];
+          
+          if (parts[1].startsWith('Patente:')) {
+            const patenteParts = parts[1].split(', ');
+            patente = patenteParts[0].replace('Patente: ', '');
+            latLngPart = patenteParts.slice(1).join(', ');
+          }
+          
+          const latMatch = latLngPart.match(/Latitud: ([-\d.]+)/);
+          const lngMatch = latLngPart.match(/Longitud: ([-\d.]+)/);
+          
+          if (latMatch && lngMatch) {
+            return {
+              dateTime,
+              patente,
+              position: [parseFloat(latMatch[1]), parseFloat(lngMatch[1])]
+            };
+          }
+          
+          return null;
+        }).filter(item => item !== null);
+        
+        // Ordenar por fecha/hora más reciente
+        processedData.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
+        
+        setBusData(processedData);
+        setLastUpdate(new Date().toLocaleString());
+        return processedData;
+      } catch (err) {
+        console.error('Error al procesar datos del GPS:', err);
+        setError('Error al procesar los datos del GPS.');
+        return [];
+      }
   };
 
   // Cargar datos al montar el componente
