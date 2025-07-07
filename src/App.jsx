@@ -8,6 +8,7 @@ import MyProfile from './Components/myProfile/myProfile';
 import AdminData from './Components/adminData/adminData';
 import CreateAccount from './Components/createAccount/createAccount';
 import FleetVehicles from './Components/fleetVehicles/fleetVehicles';
+import Mapa from './Components/mapa/mapa';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './contexts/AuthContext';
 import InstallButton from './components/InstallButton';
@@ -52,6 +53,11 @@ function AppContent() {
           <Route path="/fleetVehicles" element={
             <ProtectedRoute>
               <FleetVehicles />
+            </ProtectedRoute>
+          } />
+          <Route path="/mapa" element={
+            <ProtectedRoute>
+              <Mapa />
             </ProtectedRoute>
           } />
           

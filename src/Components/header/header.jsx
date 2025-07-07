@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './header.css';
 
@@ -8,6 +8,7 @@ function Header() {
   const [showDesktopMenu, setShowDesktopMenu] = useState(false);
   const { currentUser, userData, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   
   const accountDropdownRef = useRef(null);
   const desktopDropdownRef = useRef(null);
@@ -74,6 +75,13 @@ function Header() {
           <Link to="/">BusIA</Link>
         </div>
         <nav className="header-nav-menu">
+          {/* Enlaces directos */}
+          <div className="header-nav-links">
+            <Link to="/" className={`header-nav-link ${location.pathname === '/' ? 'active' : ''}`}>Inicio</Link>
+            <Link to="/mapa" className={`header-nav-link ${location.pathname === '/mapa' ? 'active' : ''}`}>Mapa</Link>
+            <Link to="/fleetVehicles" className={`header-nav-link ${location.pathname === '/fleetVehicles' ? 'active' : ''}`}>Flota</Link>
+          </div>
+          
           {/* Menú desplegable de Escritorio */}
           <div 
             className="header-dropdown-container"
@@ -87,6 +95,7 @@ function Header() {
             {showDesktopMenu && (
               <div className="header-dropdown-menu">
                 <Link to="/fleetVehicles" className="header-dropdown-item">Flota de Vehículos</Link>
+                <Link to="/mapa" className="header-dropdown-item">Mapa de Buses</Link>
               </div>
             )}
           </div>
